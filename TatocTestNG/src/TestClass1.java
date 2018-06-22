@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
 import org.testng.annotations.*;
 
 public class TestClass1 {
@@ -25,8 +26,10 @@ public class TestClass1 {
 	
 	public void TestFirstProblem(){
 		driver.findElement(By.linkText("Basic Course")).click();//Clicks on Basic Course
+		Assert.assertEquals(driver.findElement(By.cssSelector(".page h1")).getText(), "Grid Gate");
+		
 		driver.findElement(By.className("greenbox")).click();//Click Green Box
-		System.out.println("First Test Case is passed successfully");
+		Assert.assertEquals(driver.findElement(By.cssSelector(".page h1")).getText(), "Frame Dungeon");
 	}
 	
 	@Test
@@ -47,50 +50,57 @@ public class TestClass1 {
 		                break;
 		            }
 		        }
-		    System.out.println("Second Test Case is passed successfully");
+			Assert.assertEquals(driver.findElement(By.cssSelector(".page h1")).getText(), "Drag Around");
 	}
 	
 	@Test
 	
 	public void TestThirdProblem(){
-		WebElement source=driver.findElement(By.id("dragbox"));//Stores dragbox in webelement
-		WebElement destination=driver.findElement(By.id("dropbox"));//Stores dropbox in webelement
-		Actions action=new Actions(driver);//Initiate Actions object
-		action.dragAndDrop(source, destination).perform();;//performing drag and drop
-		driver.findElement(By.linkText("Proceed")).click();;//click on proceed
+		WebElement source=driver.findElement(By.id("dragbox"));						//Stores dragbox in webelement
+		WebElement destination=driver.findElement(By.id("dropbox"));				//Stores dropbox in webelement
+		Actions action=new Actions(driver);											//Initiate Actions object
+		action.dragAndDrop(source, destination).perform();;							//performing drag and drop
+		driver.findElement(By.linkText("Proceed")).click();;						//click on proceed
 		
-		System.out.println("Third Test Case is passed successfully");
+		Assert.assertEquals(driver.findElement(By.cssSelector(".page h1")).getText(), "Popup Windows");
+
 	}
 	
 	@Test
 	
 	public void TestFourthProblem(){
-		String mainWindowHandler = driver.getWindowHandle(); // Store your parent window
+		String mainWindowHandler = driver.getWindowHandle(); 				// Store your parent window
 
-	    driver.findElement(By.cssSelector("a")).click(); //click on popup window
+	    driver.findElement(By.cssSelector("a")).click(); 					//click on popup window
 	    String childWindowHandler = null;
 
-	    Set<String> handles = driver.getWindowHandles(); // get all window handles
+	    Set<String> handles = driver.getWindowHandles();					// get all window handles
 	    System.out.println(handles);
 	    
-	    Iterator<String> iterator = handles.iterator(); //creating iterator to get popup window
+	    Iterator<String> iterator = handles.iterator(); 					//creating iterator to get popup window
 	    while (iterator.hasNext()){
 	    childWindowHandler = iterator.next();
 	    }
-	    driver.switchTo().window(childWindowHandler); // switch to popup window
-	    driver.findElement(By.id("name")).sendKeys("Mayank");// writing in area
-	    driver.findElement(By.id("submit")).click();// clicking on submit
+	    driver.switchTo().window(childWindowHandler);						// switch to popup window
+	    driver.findElement(By.id("name")).sendKeys("A");				// writing in area
+	    driver.findElement(By.id("submit")).click();						// clicking on submit
 
-	    driver.switchTo().window(mainWindowHandler);  // switch back to parent window
-	    driver.findElements(By.cssSelector("a")).get(1).click(); //click on proceed
+	    driver.switchTo().window(mainWindowHandler); 						// switch back to parent window
+	    driver.findElements(By.cssSelector("a")).get(1).click(); 			//click on proceed
 	    
-        System.out.println("Fourth Test Case passed successfully");	    
+		Assert.assertEquals(driver.findElement(By.cssSelector(".page h1")).getText(), "Cookie Handling");
 	}
 	
 	@Test
 	
 	public void TestFifthProblem(){
-		int n=1;
+		  driver.findElement(By.linkText("Generate Token")).click();
+		    String value = driver.findElement(By.id("token")).getText().split("Token: ")[1];//get token value
+		    driver.manage().addCookie( new Cookie("Token", value, "/")); //add cookie
+		    driver.findElement(By.linkText("Proceed")).click(); //click on proceed
+			Assert.assertEquals(driver.findElement(By.cssSelector(".page h1")).getText(), "End");
+
+	/*	int n=1;
 	    while(n>0)
 	    {
 	        try {
@@ -102,12 +112,13 @@ public class TestClass1 {
 	            driver.navigate().refresh(); //refresh page if generate token does not give result
 	         }
 	    }
-	    
+	    driver.findElement(By.linkText("Generate Token")).click();
 	    String value = driver.findElement(By.id("token")).getText().split("Token: ")[1];//get token value
 	    driver.manage().addCookie( new Cookie("Token", value, "/")); //add cookie
 	    driver.findElement(By.linkText("Proceed")).click(); //click on proceed
 	
 	    System.out.println("Fifth Test Case passed successfully");
+	*/
 	}
 	
 	@AfterClass
