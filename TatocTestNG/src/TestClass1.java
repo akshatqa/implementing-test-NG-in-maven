@@ -1,3 +1,5 @@
+package com.qait.basicTatoc;
+
 import java.util.Iterator;
 import java.util.Set;
 
@@ -12,19 +14,19 @@ import org.testng.annotations.*;
 
 public class TestClass1 {
 	
-	WebDriver driver=new ChromeDriver();
+	WebDriver driver;//=new ChromeDriver();
 	
 	@BeforeClass
 	//open TATOC
 	public void LaunchURL(){
 		System.setProperty("webdriver.chrome.driver","D:\\softwares\\chromedriver_win32\\chromedriver.exe");
+		driver = new ChromeDriver();
 	driver.get("http://10.0.1.86/tatoc");//Hit the URL
 	
 	}
 	
 	@Test
-	
-	public void TestFirstProblem(){
+		public void TestFirstProblem(){
 		driver.findElement(By.linkText("Basic Course")).click();//Clicks on Basic Course
 		Assert.assertEquals(driver.findElement(By.cssSelector(".page h1")).getText(), "Grid Gate");
 		
@@ -71,7 +73,7 @@ public class TestClass1 {
 	public void TestFourthProblem(){
 		String mainWindowHandler = driver.getWindowHandle(); 				// Store your parent window
 
-	    driver.findElement(By.cssSelector("a")).click(); 					//click on popup window
+		driver.findElement(By.linkText("Launch Popup Window")).click(); 	//click on popup window
 	    String childWindowHandler = null;
 
 	    Set<String> handles = driver.getWindowHandles();					// get all window handles
@@ -82,11 +84,11 @@ public class TestClass1 {
 	    childWindowHandler = iterator.next();
 	    }
 	    driver.switchTo().window(childWindowHandler);						// switch to popup window
-	    driver.findElement(By.id("name")).sendKeys("A");				// writing in area
+	    driver.findElement(By.id("name")).sendKeys("Akshat");				// writing in area
 	    driver.findElement(By.id("submit")).click();						// clicking on submit
 
 	    driver.switchTo().window(mainWindowHandler); 						// switch back to parent window
-	    driver.findElements(By.cssSelector("a")).get(1).click(); 			//click on proceed
+	    driver.findElement(By.linkText("Proceed")).click(); 				//click on proceed
 	    
 		Assert.assertEquals(driver.findElement(By.cssSelector(".page h1")).getText(), "Cookie Handling");
 	}
@@ -124,7 +126,7 @@ public class TestClass1 {
 	@AfterClass
 
 	public void closeDriver(){
-		driver.close();
+		//driver.close();
 		System.out.println("Driver is closed successfully");
 	}
 }
